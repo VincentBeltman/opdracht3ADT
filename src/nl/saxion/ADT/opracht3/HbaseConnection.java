@@ -1,18 +1,14 @@
 package nl.saxion.ADT.opracht3;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public class HbaseConnection {
@@ -33,6 +29,22 @@ public class HbaseConnection {
 		} else {
 			System.out.println("Receiver_first already exists");
 		}
+		
+		//TestMike
+		List<String> labels = new ArrayList<String>();
+		labels.add("Hoi");
+		labels.add("doei");
+		Mail m = new Mail(null, null, System.currentTimeMillis(), null, null, null, true, labels, null);
+		Long time = (Long) Mail.objectFromBytes(m.getTimestamp() );
+		boolean statusRead = (Boolean) Mail.objectFromBytes(m.getStatusRead());
+		System.out.println("Mike " + time +  " " + statusRead);
+		List<String > labelsFromObject = (List<String>) Mail.objectFromBytes(m.getLabels());
+		for(String s : labelsFromObject)
+		{
+			System.out.println("Mike " + s);
+		}
+		
+		admin.close();
 	}
 	
 	public static HTableDescriptor createTable(String tableName){
