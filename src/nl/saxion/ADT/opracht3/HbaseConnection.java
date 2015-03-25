@@ -9,6 +9,7 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public class HbaseConnection {
@@ -43,7 +44,10 @@ public class HbaseConnection {
 		{
 			System.out.println("Mike " + s);
 		}
-		
+		HTable tableSender_first = new HTable(config, "sender_first");
+		HTable tableReceiverFirst = new HTable(config, "receiver_first");
+		boolean result = tableReceiverFirst != null && tableSender_first != null;
+		System.out.println("Do we have the tables into varbles " + result );
 		admin.close();
 	}
 	
