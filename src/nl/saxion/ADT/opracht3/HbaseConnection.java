@@ -109,6 +109,7 @@ public class HbaseConnection {
 			MailParser.createEmailFromResult(result);
 		}
 	}
+	
 
 	public void sendMail(Mail mail) {
 		byte[] rowkey = Bytes.add(mail.getSender(), seperator, mail.getTimestamp());
@@ -141,7 +142,7 @@ public class HbaseConnection {
 		p.add(other, labels, mail.getLabels());
 		return p;
 	}
-	public ArrayList<Mail> findMailsBySender(String email) throws IOException
+	public ArrayList<Mail> findReceiversBySender(String email) throws IOException
 	{
 		ArrayList<Mail> result = new ArrayList<Mail>();
 		Scan s = new Scan();
