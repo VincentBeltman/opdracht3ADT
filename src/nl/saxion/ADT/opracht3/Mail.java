@@ -74,6 +74,10 @@ public class Mail {
 
 		return null;
 	}
+	public String getBodyString()
+	{
+		return body;
+	}
 
 	public byte[] getSubject() {
 		if (subject != null) {

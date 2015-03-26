@@ -14,7 +14,8 @@ public class FindApl {
 		//findEmail();
 		//contactedBefore("willem@mail.com");
 		//GetNumberOfSendMessages();
-		getMailByBodyOrSubject("Vincent" , "mike@mail.com");
+		//getMailByBodyOrSubject("Vincent" , "mike@mail.com");
+		getMailWithLargestBody();
 
 	}
 
@@ -42,8 +43,9 @@ public class FindApl {
 	{
 		System.out.println("Aantal mails per gebruiker");
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
-		System.out.println(connection.getAllMailsBySender().size());
-		for(Mail m : connection.getAllMailsBySender())
+		
+		ArrayList<Mail> mails = connection.getAllMailsBySender();
+		for(Mail m : mails)
 		{
 			int oldValue = result.get(m.getSenderString()) != null ? result.get(m.getSenderString()) : 0 ;
 			oldValue += 1;
@@ -62,10 +64,33 @@ public class FindApl {
 	
 	private void getMailByBodyOrSubject(String searchterm ,String email) throws IOException
 	{
+		System.out.println("Mailtjes van " + email + " met de zoekterm " + searchterm);
 		for (Mail mail : connection.getMailsBySubjectAndBody(searchterm , email)) {
 			//TODO USE TO STRING
 			System.out.println(mail.getSubjectString());
 		}
+		System.out.println("----------------------------------------");
+	}
+	private void getMailWithLargestBody() throws IOException
+	{
+		ArrayList<Mail> mails = connection.getAllMailsBySender();
+		System.out.println(mails.size());
+		Mail largestBody = null;
+		for(Mail m : mails)
+		{
+			if(largestBody == null)
+			{
+				largestBody = m;
+			}
+			else
+			{
+				if(largestBody.getBodyString().length() < m.getBodyString().length())
+				{
+					largestBody = m;
+				}
+			}
+		}
+		System.out.println(largestBody.getBodyString());
 	}
 	
 }

@@ -1,6 +1,6 @@
 # opdracht3ADT
 1.	Gemiddelde bijlage grootte per gebruiker		(Vincent)
-2.	Langste bericht.		(Mike)
+2.	Langste bericht.		(Mike) (af)
 3.	Alle e-mails opvragen van de gebruiker, geordend op ontvangstdatum		(Vincent) (af)
 4.	Kunnen zoeken in e-mails (in body en onderwerp)	(Mike) (AF)
 5.	Contacten opvragen (e-mail adressen opvragen die de persoon al eerder gemaild heeft)	(Mike) (Af)
