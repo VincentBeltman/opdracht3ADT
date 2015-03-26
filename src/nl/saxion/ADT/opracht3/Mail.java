@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.hadoop.hbase.util.Bytes;
 
@@ -47,13 +46,8 @@ public class Mail {
 		}
 		return null;
 	}
-	public byte[] getReceivers() {
-		if (receivers != null) {
-
-			return objectToBytes(receivers);
-
-		}
-		return null;
+	public Map<String, String> getReceivers() {
+		return receivers;
 	}
 	public byte[] getTimestamp()
 	{
@@ -105,13 +99,9 @@ public class Mail {
 		return null;
 	}
 	
-	public byte[] getHeaders()
+	public Map<String, String> getHeaders()
 	{
-		if(headers != null)
-		{
-			return objectToBytes(headers);
-		}
-		return null;
+		return headers;
 	}
 
 	
