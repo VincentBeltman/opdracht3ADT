@@ -20,7 +20,7 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
+
 
 
 public class HbaseConnection {
@@ -152,6 +152,8 @@ public class HbaseConnection {
 			{
 				String subjectString = Bytes.toString(getByteValueFromColum(result, content, subject));
 				String bodyString = Bytes.toString(getByteValueFromColum(result, content, body));
+				String senderString = Bytes.toString(getByteValueFromColum(result, other, from));
+				System.out.println("SEnder " + senderString );
 				ArrayList<String> labelList = new ArrayList<String>();
 				Object unparsedObject = Mail.objectFromBytes(getByteValueFromColum(result, other, labels));
 				if(unparsedObject != null && unparsedObject instanceof ArrayList<?>)
@@ -159,6 +161,7 @@ public class HbaseConnection {
 					for(String label : (ArrayList<String>)  unparsedObject)
 					{
 						labelList.add(label);
+						System.out.println(label);
 					}
 				}
 				byte[] rowKey = result.getRow();
@@ -183,7 +186,7 @@ public class HbaseConnection {
 					System.out.println(header);
 					headerMap.put(header, Bytes.toString(getByteValueFromColum(result, receivers, toBytes(header))));
 				}
-				return new Mail(null, receiverMap, timestamp, bodyString, subjectString, null, labelList, headerMap);
+				return new Mail(senderString, receiverMap, timestamp, bodyString, subjectString, null, labelList, headerMap);
 				
 			}
 			return null;
