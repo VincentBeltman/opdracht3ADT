@@ -13,6 +13,9 @@ import org.apache.hadoop.hbase.ZooKeeperConnectionException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public class HbaseConnection {
@@ -68,6 +71,18 @@ public class HbaseConnection {
 	
 	public static byte[] toBytes(String string){
 		return Bytes.toBytes(string);
+	}
+	
+	public void scanEmail() throws IOException
+	{
+		Scan scan = new Scan();
+		scan.addColumn(toBytes("content"), toBytes("subject"));
+		
+		ResultScanner scanner =  tableSenderFirst.getScanner(scan);
+		for(Result result : scanner)
+		{
+			System.out.println(Bytes.toString(result.getValue(toBytes("content"), toBytes("subject"))));
+		}
 	}
 
 	public void sendMail(Mail mail) {

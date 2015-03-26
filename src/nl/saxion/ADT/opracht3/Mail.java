@@ -8,8 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.google.common.io.Files;
@@ -39,6 +39,11 @@ public class Mail {
 		this.labels = labels;
 		this.headers = headers;
 		this.statusRead = false;
+	}
+	
+	public Mail(Result result)
+	{
+		
 	}
 
 	public byte[] getSender() {

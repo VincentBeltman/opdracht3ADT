@@ -8,6 +8,7 @@ public class Apl {
 		try {
 			HbaseConnection con =  HbaseConnection.getInstance();
 			InsertApl insertApl = new InsertApl(con);
+			FindApl findApl = new FindApl(con);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
