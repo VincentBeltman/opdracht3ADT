@@ -148,7 +148,7 @@ public class HbaseConnection {
 	
 	private static class MailParser{
 	
-		public static void createEmailFromResult(Result result)
+		public static Mail createEmailFromResult(Result result)
 		{
 			if(!result.isEmpty())
 			{
@@ -163,19 +163,14 @@ public class HbaseConnection {
 						labelList.add(label);
 					}
 				}
+				byte[] rowKey = result.getRow();
+				int offset = rowKey.length - Bytes.toBytes(System.currentTimeMillis()).length;
 				
-				byte [] rowKey = result.getRow();
+				//String email = 
+				System.out.println(Bytes.toString(rowKey , 0 , offset));
 				
-				int size = rowKey.length - Mail.objectToBytes(System.currentTimeMillis()).length;
-				String emailTest = "";
-				for(int i = 0 ; i < size; i++)
-				{
-					emailTest += Byte.toString(rowKey[i]);
-				}
+				Long timestamp = Bytes.toLong(rowKey, offset);
 				
-				
-				
-				long test =Bytes.toLong(result.getRow());
 				
 				Map<String, String> receiverMap = new HashMap<String, String>();
 				for(String email : getColumnsInColumnFamily(result ,receivers ))
@@ -190,9 +185,10 @@ public class HbaseConnection {
 					System.out.println(header);
 					headerMap.put(header, Bytes.toString(getByteValueFromColum(result, receivers, toBytes(header))));
 				}
-				//return new Mail(null, receiverMap, 0, bodyString, subject, null, labelList, headerMap);
+				return new Mail(null, receiverMap, timestamp, bodyString, subjectString, null, labelList, headerMap);
 				
 			}
+			return null;
 			
 		}
 		private static byte[] getByteValueFromColum(Result result , byte[] family , byte[] column)

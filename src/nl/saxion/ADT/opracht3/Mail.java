@@ -54,7 +54,7 @@ public class Mail {
 	{
 		if(timestamp != 0)
 		{
-			return objectToBytes(timestamp);
+			return Bytes.toBytes(timestamp);
 		}
 		return null;
 	}
