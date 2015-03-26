@@ -2,6 +2,7 @@ package nl.saxion.ADT.opracht3;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
+
+import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 
 public class HbaseConnection {
@@ -162,7 +165,18 @@ public class HbaseConnection {
 					}
 				}
 				
+				byte [] rowKey = result.getRow();
 				
+				int size = rowKey.length - Mail.objectToBytes(System.currentTimeMillis()).length;
+				String emailTest = "";
+				for(int i = 0 ; i < size; i++)
+				{
+					emailTest += Byte.toString(rowKey[i]);
+				}
+				
+				
+				
+				long test =Bytes.toLong(result.getRow());
 				
 				Map<String, String> receiverMap = new HashMap<String, String>();
 				for(String email : getColumnsInColumnFamily(result ,receivers ))
