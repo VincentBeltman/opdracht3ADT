@@ -35,7 +35,7 @@ public class HbaseConnection {
 		List<String> labels = new ArrayList<String>();
 		labels.add("Hoi");
 		labels.add("doei");
-		Mail m = new Mail(null, null, System.currentTimeMillis(), null, null, null, true, labels, null);
+		Mail m = new Mail(null, null, System.currentTimeMillis(), null, null, null, labels, null);
 		Long time = (Long) Mail.objectFromBytes(m.getTimestamp() );
 		boolean statusRead = (Boolean) Mail.objectFromBytes(m.getStatusRead());
 		System.out.println("Mike " + time +  " " + statusRead);
@@ -66,5 +66,9 @@ public class HbaseConnection {
 	
 	public static byte[] toBytes(String string){
 		return Bytes.toBytes(string);
+	}
+
+	public void sendMail(Mail mail) {
+		System.out.println(mail.getBody());
 	}
 }

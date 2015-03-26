@@ -18,7 +18,7 @@ import com.google.common.io.Files;
 public class Mail {
 
 	private String sender;
-	private Set<String> receivers;
+	private Map<String, String> receivers;
 	private long timestamp;
 	private String body;
 	private String subject;
@@ -27,8 +27,8 @@ public class Mail {
 	private List<String> labels;
 	private Map<String, String> headers;
 
-	public Mail(String sender, Set<String> receivers, long timestamp,
-			String body, String subject, File attachment, boolean statusRead,
+	public Mail(String sender, Map<String, String> receivers, long timestamp,
+			String body, String subject, File attachment,
 			List<String> labels, Map<String, String> headers) {
 		this.sender = sender;
 		this.receivers = receivers;
@@ -38,7 +38,7 @@ public class Mail {
 		this.attachment = attachment;
 		this.labels = labels;
 		this.headers = headers;
-		this.statusRead = statusRead;
+		this.statusRead = false;
 	}
 
 	public byte[] getSender() {
