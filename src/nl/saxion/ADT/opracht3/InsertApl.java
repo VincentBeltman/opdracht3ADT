@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class insertApl {
+public class InsertApl {
 	private HbaseConnection connection;
 	
-	public insertApl(HbaseConnection connection){
+	public InsertApl(HbaseConnection connection){
 		this.connection = connection;
 		
 		sendEmail1();
