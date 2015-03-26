@@ -41,10 +41,6 @@ public class Mail {
 		this.statusRead = false;
 	}
 	
-	public Mail(Result result)
-	{
-		
-	}
 
 	public byte[] getSender() {
 		if (sender != null) {
@@ -52,13 +48,8 @@ public class Mail {
 		}
 		return null;
 	}
-	public byte[] getReceivers() {
-		if (receivers != null) {
-
-			return objectToBytes(receivers);
-
-		}
-		return null;
+	public Map<String, String> getReceivers() {
+		return receivers;
 	}
 	public byte[] getTimestamp()
 	{
@@ -110,13 +101,9 @@ public class Mail {
 		return null;
 	}
 	
-	public byte[] getHeaders()
+	public Map<String, String> getHeaders()
 	{
-		if(headers != null)
-		{
-			return objectToBytes(headers);
-		}
-		return null;
+		return headers;
 	}
 
 	

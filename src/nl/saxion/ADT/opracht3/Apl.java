@@ -7,10 +7,12 @@ public class Apl {
 	public static void main (String[] args) {
 		try {
 			HbaseConnection con =  HbaseConnection.getInstance();
-			InsertApl insertApl = new InsertApl(con);
-			FindApl findApl = new FindApl(con);
+			
+			new InsertApl(con);
+			new FindApl(con);
+			con.endProcess();
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
