@@ -21,6 +21,9 @@ public class InsertApl {
 		sendEmail8();
 		sendEmail9();
 		sendEmail10();
+		replyEmail1();
+		replyEmail2();
+		forwardEmail();
 	}
 	
 	public void sendEmail1(){
@@ -34,6 +37,63 @@ public class InsertApl {
 		headers.put("Content-Language", "nl");
 		String body = "Firts email";
 		String subject = "Email";
+		Mail mail = new Mail(afzender, receivers, System.currentTimeMillis(), body, subject, null, labels, headers);
+		connection.sendMail(mail);
+	}
+	
+	public void replyEmail1(){
+		// TODO: Get email to evert. Nummer 5 en stop sender in receivers
+		Map<String, String> receivers = new HashMap<String, String>();
+		//receivers.put("mike@mail.com", "To");
+		// TODO: stop evert hierin
+		String afzender = "vincent@mail.com";
+		// TODO: labels uit oude mail hierin zetten
+		List<String> labels = new ArrayList<String>();
+		labels.add("emails");
+		labels.add("teteee");
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Content-Language", "nl");
+		// TODO: pak body uit oude mail en voeg dat hier aan toe misschien nog wat van vorig mailtje
+		String body = "Ja hoor wat dacht je van maandag om 13:00?\n " /*+ mail.getBody*/;
+		String subject = "RE: " /*+ mail.getSubject*/;
+		Mail mail = new Mail(afzender, receivers, System.currentTimeMillis(), body, subject, null, labels, headers);
+		connection.sendMail(mail);
+	}
+	
+	public void replyEmail2(){
+		// TODO: Get email of evert. reply 1 en stop sender in receivers
+		Map<String, String> receivers = new HashMap<String, String>();
+		//receivers.put("mike@mail.com", "To");
+		// TODO: stop vincent hierin
+		String afzender = "vincent@mail.com";
+		// TODO: labels uit oude mail hierin zetten
+		List<String> labels = new ArrayList<String>();
+		labels.add("emails");
+		labels.add("teteee");
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Content-Language", "nl");
+		// TODO: pak body uit oude mail en voeg dat hier aan toe misschien nog wat van vorig mailtje
+		String body = "Ja hoor wat dacht je van maandag om 13:00?\n " /*+ mail.getBody*/;
+		String subject = "RE: " /*+ mail.getSubject*/;
+		Mail mail = new Mail(afzender, receivers, System.currentTimeMillis(), body, subject, null, labels, headers);
+		connection.sendMail(mail);
+	}
+	
+	public void forwardEmail(){
+		// TODO: Get email of willem. mail 3 en stop vincent in receivers
+		Map<String, String> receivers = new HashMap<String, String>();
+		receivers.put("vincent@mail.com", "To");
+		// TODO: stop mike hierin
+		String afzender = "vincent@mail.com";
+		// TODO: labels uit oude mail hierin zetten
+		List<String> labels = new ArrayList<String>();
+		labels.add("emails");
+		labels.add("teteee");
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Content-Language", "nl");
+		// TODO: pak body uit oude mail en voeg dat hier aan toe misschien nog wat van vorig mailtje
+		String body = "Zie je wat willem mij stuurt? Hij ook altijd met zijn stampot.\n " /*+ mail.getBody*/;
+		String subject = "Fw: " /*+ mail.getSubject*/;
 		Mail mail = new Mail(afzender, receivers, System.currentTimeMillis(), body, subject, null, labels, headers);
 		connection.sendMail(mail);
 	}

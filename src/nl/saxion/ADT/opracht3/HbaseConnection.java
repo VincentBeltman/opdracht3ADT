@@ -116,6 +116,7 @@ public class HbaseConnection {
 			for (Entry<String, String> entry : mail.getReceivers().entrySet()){
 				rowkey = Bytes.add(toBytes(entry.getKey()), seperator, mail.getTimestamp());
 				p = mailToPut(rowkey, mail);
+				p.add(other, toBytes("From"), mail.getSender());
 				tableReceiverFirst.put(p);
 			}
 			System.out.println("Added email");
@@ -137,10 +138,6 @@ public class HbaseConnection {
 		p.add(attachments, file, mail.getAttachment());
 		p.add(other, labels, mail.getLabels());
 		return p;
-	}
-	
-	public void endProcess() throws IOException{
-		admin.close();
 	}
 	
 	private static class MailParser{
@@ -205,5 +202,9 @@ public class HbaseConnection {
 
 		      return Quantifers;
 		}
+	}
+	
+	public void endProcess() throws IOException{
+		admin.close();
 	}
 }
