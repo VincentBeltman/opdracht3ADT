@@ -13,6 +13,14 @@ public class InsertApl {
 
 		sendEmail1();
 		sendEmail2();
+		sendEmail3();
+		sendEmail4();
+		sendEmail5();
+		sendEmail6();
+		sendEmail7();
+		sendEmail8();
+		sendEmail9();
+		sendEmail10();
 	}
 	
 	public void sendEmail1(){

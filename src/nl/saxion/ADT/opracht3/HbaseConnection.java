@@ -29,6 +29,8 @@ public class HbaseConnection {
 	private final static byte[] body = toBytes("body");
 	private final static byte[] file = toBytes("file");
 	private final static byte[] labels = toBytes("labels");
+	
+	private final static byte[] seperator = toBytes("|");
 	public static HbaseConnection getInstance() throws IOException
 	{
 		if(instance == null)
@@ -80,12 +82,12 @@ public class HbaseConnection {
 	}
 
 	public void sendMail(Mail mail) {
-		byte[] rowkey = Bytes.add(mail.getSender(), mail.getTimestamp());
+		byte[] rowkey = Bytes.add(mail.getSender(), seperator, mail.getTimestamp());
 		try {
 			Put p = mailToPut(rowkey, mail);
 			tableSenderFirst.put(p);
 			for (Entry<String, String> entry : mail.getReceivers().entrySet()){
-				rowkey = Bytes.add(toBytes(entry.getKey()), mail.getTimestamp());
+				rowkey = Bytes.add(toBytes(entry.getKey()), seperator, mail.getTimestamp());
 				p = mailToPut(rowkey, mail);
 				tableReceiverFirst.put(p);
 			}
