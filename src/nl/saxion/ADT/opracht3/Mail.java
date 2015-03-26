@@ -81,6 +81,11 @@ public class Mail {
 		}
 		return null;
 	}
+	
+	public String getSubjectString()
+	{
+		return subject;
+	}
 
 	public byte[] getAttachment() {
 		if (attachment != null) {

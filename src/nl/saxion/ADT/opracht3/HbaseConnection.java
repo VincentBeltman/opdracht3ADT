@@ -19,8 +19,11 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
+import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.PrefixFilter;
 import org.apache.hadoop.hbase.filter.RegexStringComparator;
+import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
+import org.apache.hadoop.hbase.filter.SubstringComparator;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.sun.imageio.plugins.png.RowFilter;
@@ -170,6 +173,29 @@ public class HbaseConnection {
 		return result;
 	}
 	
+	public ArrayList<Mail> getMailsBySubjectAndBody(String searchWord , String email) throws IOException
+	{
+		ArrayList<Mail> result = new ArrayList<Mail>();
+		FilterList allFilters = new FilterList(FilterList.Operator.MUST_PASS_ALL);
+		
+		PrefixFilter filter = new PrefixFilter(toBytes(email));
+		allFilters.addFilter(filter);
+		FilterList orFilter=new FilterList(FilterList.Operator.MUST_PASS_ONE);
+		allFilters.addFilter(orFilter);
+		SubstringComparator comparator = new SubstringComparator(searchWord);
+		SingleColumnValueFilter subjectFilter = new SingleColumnValueFilter(content, subject, CompareOp.EQUAL, comparator);
+		SingleColumnValueFilter bodyFilter = new SingleColumnValueFilter(content, body, CompareOp.EQUAL, comparator);
+		orFilter.addFilter(subjectFilter);
+		orFilter.addFilter(bodyFilter);
+		Scan scan = new Scan();
+		scan.setFilter(allFilters);
+		ResultScanner scanner =  tableReceiverFirst.getScanner(scan);
+		for(Result r : scanner)
+		{
+			result.add(MailParser.createEmailFromResult(r));
+		}
+		return result;
+	}
 	private static class MailParser{
 	
 		public static Mail createEmailFromResult(Result result)

@@ -12,8 +12,9 @@ public class FindApl {
 	public FindApl(HbaseConnection connection) throws IOException {
 		this.connection = connection;
 		//findEmail();
-		contactedBefore("willem@mail.com");
-		GetNumberOfSendMessages();
+		//contactedBefore("willem@mail.com");
+		//GetNumberOfSendMessages();
+		getMailByBodyOrSubject("Mike" , "mike@mail.com");
 
 	}
 
@@ -57,6 +58,14 @@ public class FindApl {
 		System.out.println("----------------------------------------");
 		
 		
+	}
+	
+	private void getMailByBodyOrSubject(String searchterm ,String email) throws IOException
+	{
+		for (Mail mail : connection.getMailsBySubjectAndBody(searchterm , email)) {
+			//TODO USE TO STRING
+			System.out.println(mail.getSubjectString());
+		}
 	}
 	
 }
