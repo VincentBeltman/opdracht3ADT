@@ -175,7 +175,7 @@ public class HbaseConnection {
 					for(String label : (ArrayList<String>)  unparsedObject)
 					{
 						labelList.add(label);
-						System.out.println(label);
+						//System.out.println(label);
 					}
 				}
 				byte[] rowKey = result.getRow();
@@ -190,7 +190,7 @@ public class HbaseConnection {
 				
 				Long timestamp = Bytes.toLong(rowKey, offset);
 				
-				
+				//System.out.println(timestamp);
 				Map<String, String> receiverMap = new HashMap<String, String>();
 				for(String email : getColumnsInColumnFamily(result ,receivers ))
 				{
@@ -201,7 +201,7 @@ public class HbaseConnection {
 				Map<String, String> headerMap = new HashMap<String, String>();
 				for(String header : getColumnsInColumnFamily(result ,headers ))
 				{
-					System.out.println(header);
+					//System.out.println(header);
 					headerMap.put(header, Bytes.toString(getByteValueFromColum(result, receivers, toBytes(header))));
 				}
 				return new Mail(senderString, receiverMap, timestamp, bodyString, subjectString, null, labelList, headerMap);

@@ -11,7 +11,7 @@ public class FindApl {
 	public FindApl(HbaseConnection connection) throws IOException {
 		this.connection = connection;
 		//findEmail();
-		contactedBefore("vincent@mail.com");
+		contactedBefore("willem@mail.com");
 
 	}
 

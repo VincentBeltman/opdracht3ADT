@@ -58,6 +58,10 @@ public class Mail {
 		}
 		return null;
 	}
+	public long getTimeStamp()
+	{
+		return timestamp;
+	}
 
 	public byte[] getBody() {
 		if (body != null) {
