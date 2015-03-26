@@ -2,6 +2,7 @@ package nl.saxion.ADT.opracht3;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,6 +19,8 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
+
+import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 
 public class HbaseConnection {
@@ -142,7 +145,7 @@ public class HbaseConnection {
 	
 	private static class MailParser{
 	
-		public static void createEmailFromResult(Result result)
+		public static Mail createEmailFromResult(Result result)
 		{
 			if(!result.isEmpty())
 			{
@@ -157,7 +160,13 @@ public class HbaseConnection {
 						labelList.add(label);
 					}
 				}
+				byte[] rowKey = result.getRow();
+				int offset = rowKey.length - Bytes.toBytes(System.currentTimeMillis()).length;
 				
+				//String email = 
+				System.out.println(Bytes.toString(rowKey , 0 , offset));
+				
+				Long timestamp = Bytes.toLong(rowKey, offset);
 				
 				
 				Map<String, String> receiverMap = new HashMap<String, String>();
@@ -173,9 +182,10 @@ public class HbaseConnection {
 					System.out.println(header);
 					headerMap.put(header, Bytes.toString(getByteValueFromColum(result, receivers, toBytes(header))));
 				}
-				//return new Mail(null, receiverMap, 0, bodyString, subject, null, labelList, headerMap);
+				return new Mail(null, receiverMap, timestamp, bodyString, subjectString, null, labelList, headerMap);
 				
 			}
+			return null;
 			
 		}
 		private static byte[] getByteValueFromColum(Result result , byte[] family , byte[] column)
