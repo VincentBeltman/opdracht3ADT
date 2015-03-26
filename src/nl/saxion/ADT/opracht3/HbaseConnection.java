@@ -18,7 +18,12 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
+import org.apache.hadoop.hbase.filter.PrefixFilter;
+import org.apache.hadoop.hbase.filter.RegexStringComparator;
 import org.apache.hadoop.hbase.util.Bytes;
+
+import com.sun.imageio.plugins.png.RowFilter;
 
 
 
@@ -96,14 +101,7 @@ public class HbaseConnection {
 	public void scanEmail() throws IOException
 	{
 		Scan scan = new Scan();
-//		scan.addColumn(content , subject);
-//		scan.addColumn(content, body);
-//		scan.addColumn(other, labels);
-//		scan.addFamily(headers);
-//		scan.addColumn(attachments, file);
-//		scan.addFamily(receivers);
-		
-		
+
 		
 		ResultScanner scanner =  tableSenderFirst.getScanner(scan);
 		for(Result result : scanner)
@@ -143,6 +141,22 @@ public class HbaseConnection {
 		p.add(other, labels, mail.getLabels());
 		return p;
 	}
+	public ArrayList<Mail> findMailsBySender(String email) throws IOException
+	{
+		ArrayList<Mail> result = new ArrayList<Mail>();
+		Scan s = new Scan();
+		s.addFamily(receivers);
+		PrefixFilter filter = new PrefixFilter(toBytes(email));
+		s.setFilter(filter);
+		
+		ResultScanner scanner = tableSenderFirst.getScanner(s);
+		for(Result r : scanner)
+		{
+			result.add(MailParser.createEmailFromResult(r));
+		}
+		return result;
+		
+	}
 	
 	private static class MailParser{
 	
@@ -172,8 +186,7 @@ public class HbaseConnection {
 					senderString = (Bytes.toString(rowKey , 0 , offset));
 					
 				}
-				System.out.println("SEnder " + senderString );
-				//System.out.println);
+				
 				
 				Long timestamp = Bytes.toLong(rowKey, offset);
 				

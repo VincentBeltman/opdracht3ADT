@@ -125,6 +125,11 @@ public class Mail {
 	}
 
 	public static Object objectFromBytes(byte[] data) {
+		
+		if(data == null)
+		{
+			return null;
+		}
 		ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
 
 		try {
