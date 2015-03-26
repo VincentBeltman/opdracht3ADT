@@ -12,11 +12,14 @@ import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public class HbaseConnection {
 	
 	private static HbaseConnection instance;
+	private static HTable tableSenderFirst;
+	private static HTable tableReceiverFirst;
 	public static HbaseConnection getInstance() throws IOException
 	{
 		if(instance == null)
@@ -37,6 +40,8 @@ public class HbaseConnection {
 		} else {
 			System.out.println("Sender_first already exists");
 		}
+		tableSenderFirst = new HTable(config, "sender_first");
+		tableReceiverFirst = new HTable(config, "receiver_first");
 
 		// Creates receiver_first if not exists
 		if(!admin.tableExists(toBytes("receiver_first"))){
@@ -44,25 +49,8 @@ public class HbaseConnection {
 		} else {
 			System.out.println("Receiver_first already exists");
 		}
-		
-		//TestMike
-		List<String> labels = new ArrayList<String>();
-		labels.add("Hoi");
-		labels.add("doei");
-		Mail m = new Mail(null, null, System.currentTimeMillis(), null, null, null, labels, null);
-		Long time = (Long) Mail.objectFromBytes(m.getTimestamp() );
-		boolean statusRead = (Boolean) Mail.objectFromBytes(m.getStatusRead());
-		System.out.println("Mike " + time +  " " + statusRead);
-		List<String > labelsFromObject = (List<String>) Mail.objectFromBytes(m.getLabels());
-		for(String s : labelsFromObject)
-		{
-			System.out.println("Mike " + s);
-		}
-		HTable tableSender_first = new HTable(config, "sender_first");
-		HTable tableReceiverFirst = new HTable(config, "receiver_first");
-		boolean result = tableReceiverFirst != null && tableSender_first != null;
-		System.out.println("Do we have the tables into varbles " + result );
-		admin.close();
+
+		//admin.close();
 	}
 	
 	public static HTableDescriptor createTable(String tableName){
@@ -83,6 +71,14 @@ public class HbaseConnection {
 	}
 
 	public void sendMail(Mail mail) {
-		System.out.println(mail.getBody());
+		byte[] rowkey = Bytes.add(mail.getSender(), mail.getTimestamp());
+		Put p = new Put(rowkey);
+		p.add(toBytes("content"), toBytes("subject"), mail.getSubject());
+		try {
+			tableSenderFirst.put(p);
+			System.out.println("Added email");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
