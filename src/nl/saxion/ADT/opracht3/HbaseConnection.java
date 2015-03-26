@@ -177,7 +177,7 @@ public class HbaseConnection {
 					System.out.println(header);
 					headerMap.put(header, Bytes.toString(getByteValueFromColum(result, receivers, toBytes(header))));
 				}
-				//return new Mail(null, receiverMap, timestamp, bodyString, subjectString, null, labels, headers)
+				//return new Mail(null, receiverMap, 0, bodyString, subject, null, labelList, headerMap);
 				
 			}
 			
