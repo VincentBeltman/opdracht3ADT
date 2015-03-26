@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.google.common.io.Files;
@@ -80,7 +79,6 @@ public class Mail {
 			try {
 				return Files.toByteArray(attachment);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}
@@ -120,7 +118,6 @@ public class Mail {
 			out.writeObject(obj);
 			return byteOut.toByteArray();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -134,10 +131,8 @@ public class Mail {
 			ObjectInputStream in = new ObjectInputStream(byteIn);
 			return in.readObject();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
