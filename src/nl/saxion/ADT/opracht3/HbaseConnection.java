@@ -158,6 +158,17 @@ public class HbaseConnection {
 		return result;
 		
 	}
+	public ArrayList<Mail> getAllMailsBySender() throws IOException
+	{
+		Scan scan = new Scan();
+		ArrayList<Mail> result = new ArrayList<Mail>();
+		ResultScanner scanner =  tableSenderFirst.getScanner(scan);
+		for(Result r : scanner)
+		{
+			result.add(MailParser.createEmailFromResult(r));
+		}
+		return result;
+	}
 	
 	private static class MailParser{
 	

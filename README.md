@@ -8,6 +8,6 @@
 7.	Een e-mail kunnen verwijderen uit het systeem		(Vincent)
 8.	Het label van een e-mail kunnen wijzigen (bijvoorbeeld van inbox naar archief)		(Mike)
 9.	Een mail kunnen beantwoorden of doorsturen		(Vincent)
-10.	Per gebruiker het totaal aantal verstuurde e-mails	(Mike)
+10.	Per gebruiker het totaal aantal verstuurde e-mails	(Mike) (af)
 11.	Per gebruiker het totaal aantal ontvangen e-mails	(Vincent)
 

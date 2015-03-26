@@ -13,6 +13,7 @@ public class FindApl {
 		this.connection = connection;
 		//findEmail();
 		contactedBefore("willem@mail.com");
+		GetNumberOfSendMessages();
 
 	}
 
@@ -36,9 +37,24 @@ public class FindApl {
 		}
 		System.out.println("----------------------------------------");
 	}
-	private void GetNumberOfSendMessages()
+	private void GetNumberOfSendMessages() throws IOException
 	{
+		System.out.println("Aantal mails per gebruiker");
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		System.out.println(connection.getAllMailsBySender().size());
+		for(Mail m : connection.getAllMailsBySender())
+		{
+			int oldValue = result.get(m.getSenderString()) != null ? result.get(m.getSenderString()) : 0 ;
+			oldValue += 1;
+			result.put(m.getSenderString(), oldValue );
+			
+			
+		}
+		for(String k :  result.keySet())
+		{
+			System.out.println(k + " " + result.get(k));
+		}
+		System.out.println("----------------------------------------");
 		
 		
 	}

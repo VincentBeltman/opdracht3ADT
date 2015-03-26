@@ -47,6 +47,10 @@ public class Mail {
 		}
 		return null;
 	}
+	public String getSenderString()
+	{
+		return sender;
+	}
 	public Map<String, String> getReceivers() {
 		return receivers;
 	}
