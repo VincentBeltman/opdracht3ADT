@@ -40,6 +40,7 @@ public class HbaseConnection {
 	private final static byte[] body = toBytes("body");
 	private final static byte[] file = toBytes("file");
 	private final static byte[] labels = toBytes("labels");
+	private final static byte[] from =  toBytes("From");
 	
 	private final static byte[] seperator = toBytes("|");
 	public static HbaseConnection getInstance() throws IOException
@@ -119,7 +120,7 @@ public class HbaseConnection {
 			for (Entry<String, String> entry : mail.getReceivers().entrySet()){
 				rowkey = Bytes.add(toBytes(entry.getKey()), seperator, mail.getTimestamp());
 				p = mailToPut(rowkey, mail);
-				p.add(other, toBytes("From"), mail.getSender());
+				p.add(other, from, mail.getSender());
 				tableReceiverFirst.put(p);
 			}
 			System.out.println("Added email");
