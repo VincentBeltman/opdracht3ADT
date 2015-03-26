@@ -29,6 +29,7 @@ public class InsertApl {
 		String afzender = "vincent@mail.com";
 		List<String> labels = new ArrayList<String>();
 		labels.add("emails");
+		labels.add("teteee");
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Content-Language", "nl");
 		String body = "Firts email";

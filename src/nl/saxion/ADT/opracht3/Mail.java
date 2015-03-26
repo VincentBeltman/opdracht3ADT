@@ -39,6 +39,7 @@ public class Mail {
 		this.headers = headers;
 		this.statusRead = false;
 	}
+	
 
 	public byte[] getSender() {
 		if (sender != null) {
@@ -78,7 +79,6 @@ public class Mail {
 			try {
 				return Files.toByteArray(attachment);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}
@@ -118,7 +118,6 @@ public class Mail {
 			out.writeObject(obj);
 			return byteOut.toByteArray();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -132,10 +131,8 @@ public class Mail {
 			ObjectInputStream in = new ObjectInputStream(byteIn);
 			return in.readObject();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

@@ -1,7 +1,11 @@
 package nl.saxion.ADT.opracht3;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NavigableMap;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -10,7 +14,11 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
+
 
 public class HbaseConnection {
 	
@@ -80,6 +88,25 @@ public class HbaseConnection {
 	public static byte[] toBytes(String string){
 		return Bytes.toBytes(string);
 	}
+	
+	public void scanEmail() throws IOException
+	{
+		Scan scan = new Scan();
+//		scan.addColumn(content , subject);
+//		scan.addColumn(content, body);
+//		scan.addColumn(other, labels);
+//		scan.addFamily(headers);
+//		scan.addColumn(attachments, file);
+//		scan.addFamily(receivers);
+		
+		
+		
+		ResultScanner scanner =  tableSenderFirst.getScanner(scan);
+		for(Result result : scanner)
+		{
+			MailParser.createEmailFromResult(result);
+		}
+	}
 
 	public void sendMail(Mail mail) {
 		byte[] rowkey = Bytes.add(mail.getSender(), seperator, mail.getTimestamp());
@@ -114,5 +141,69 @@ public class HbaseConnection {
 	
 	public void endProcess() throws IOException{
 		admin.close();
+	}
+	
+	private static class MailParser{
+	
+		public static void createEmailFromResult(Result result)
+		{
+			if(!result.isEmpty())
+			{
+				String subjectString = Bytes.toString(getByteValueFromColum(result, content, subject));
+				String bodyString = Bytes.toString(getByteValueFromColum(result, content, body));
+				ArrayList<String> labelList = new ArrayList<String>();
+				Object unparsedObject = Mail.objectFromBytes(getByteValueFromColum(result, other, labels));
+				if(unparsedObject != null && unparsedObject instanceof ArrayList<?>)
+				{
+					for(String label : (ArrayList<String>)  unparsedObject)
+					{
+						labelList.add(label);
+					}
+				}
+				
+				
+				
+				Map<String, String> receiverMap = new HashMap<String, String>();
+				for(String email : getColumnsInColumnFamily(result ,receivers ))
+				{
+					
+					receiverMap.put(email, Bytes.toString(getByteValueFromColum(result, receivers, toBytes(email))));
+				}
+				
+				Map<String, String> headerMap = new HashMap<String, String>();
+				for(String header : getColumnsInColumnFamily(result ,headers ))
+				{
+					System.out.println(header);
+					headerMap.put(header, Bytes.toString(getByteValueFromColum(result, receivers, toBytes(header))));
+				}
+				//return new Mail(null, receiverMap, 0, bodyString, subject, null, labelList, headerMap);
+				
+			}
+			
+		}
+		private static byte[] getByteValueFromColum(Result result , byte[] family , byte[] column)
+		{
+			if(result.containsColumn(family, column))
+			{
+				byte[] value = result.getValue(family, column);
+				return value;
+			}
+			return null;
+		}
+		private static String[] getColumnsInColumnFamily(Result r, byte[] ColumnFamily)
+		{
+
+		      NavigableMap<byte[], byte[]> familyMap = r.getFamilyMap(ColumnFamily);
+		      String[] Quantifers = new String[familyMap.size()];
+
+		      int counter = 0;
+		      for(byte[] bQunitifer : familyMap.keySet())
+		      {
+		          Quantifers[counter++] = Bytes.toString(bQunitifer);
+
+		      }
+
+		      return Quantifers;
+		}
 	}
 }
