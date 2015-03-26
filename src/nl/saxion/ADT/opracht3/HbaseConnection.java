@@ -153,7 +153,7 @@ public class HbaseConnection {
 				String subjectString = Bytes.toString(getByteValueFromColum(result, content, subject));
 				String bodyString = Bytes.toString(getByteValueFromColum(result, content, body));
 				String senderString = Bytes.toString(getByteValueFromColum(result, other, from));
-				System.out.println("SEnder " + senderString );
+				
 				ArrayList<String> labelList = new ArrayList<String>();
 				Object unparsedObject = Mail.objectFromBytes(getByteValueFromColum(result, other, labels));
 				if(unparsedObject != null && unparsedObject instanceof ArrayList<?>)
@@ -167,8 +167,13 @@ public class HbaseConnection {
 				byte[] rowKey = result.getRow();
 				int offset = rowKey.length - Bytes.toBytes(System.currentTimeMillis()).length;
 				
-				//String email = 
-				System.out.println(Bytes.toString(rowKey , 0 , offset));
+				if(senderString == null)
+				{
+					senderString = (Bytes.toString(rowKey , 0 , offset));
+					
+				}
+				System.out.println("SEnder " + senderString );
+				//System.out.println);
 				
 				Long timestamp = Bytes.toLong(rowKey, offset);
 				
