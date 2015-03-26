@@ -14,7 +14,7 @@ public class FindApl {
 		//findEmail();
 		//contactedBefore("willem@mail.com");
 		//GetNumberOfSendMessages();
-		getMailByBodyOrSubject("Mike" , "mike@mail.com");
+		getMailByBodyOrSubject("Vincent" , "mike@mail.com");
 
 	}
 
